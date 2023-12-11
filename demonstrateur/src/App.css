@@ -1,0 +1,67 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 30vmin;
+  pointer-events: none;
+}
+.App-header img {
+  max-width: 100px; /* Ajustez la largeur maximale selon vos besoins */
+  max-height: 100px; 
+  border-radius: 50%; 
+  margin-bottom: 0%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #102b53;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+.result-display {
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f3f3f3;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.result-box {
+  border: 2px solid #007bff; /* Couleur de bordure, à ajuster selon vos préférences */
+  border-radius: 8px; /* Bordures arrondies pour le style */
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 20%;
+  margin-left: 20%;
+  background-color: #f8f9fa; /* Couleur de fond, à ajuster selon vos préférences */
+}
+/* Vous pouvez personnaliser davantage en fonction de vos préférences de style */
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
