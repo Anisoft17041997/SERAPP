@@ -2,3 +2,5 @@
 ml/data/audio_speech_emotion
 ml/data/test_data
 demonstrateur/node_modules
+api/.DS_Store
+ml/.DS_Store

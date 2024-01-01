@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import './bootstrap/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
-import { FaMicrophone, FaStop, FaFileImport } from 'react-icons/fa';
+import {FaMicrophone, FaStop, FaFileImport } from 'react-icons/fa';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import './App.css';
