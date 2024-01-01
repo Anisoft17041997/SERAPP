@@ -1,6 +1,11 @@
 .serapp-env
-ml/data/audio_speech_emotion
-ml/data/test_data
-demonstrateur/node_modules
+.DS_Store
+
 api/.DS_Store
+
 ml/.DS_Store
+ml/data/test_data
+ml/data/audio_speech_emotion
+
+demonstrateur/node_modules
+demonstrateur/src/.DS_Store
