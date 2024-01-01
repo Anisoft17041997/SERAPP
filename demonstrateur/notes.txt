@@ -1,0 +1,9 @@
+Assurez-vous d'avoir Node.js et npm installés
+Installer les Dépendances : npm install
+si vous avez des erreur à ce niveau, vous pouvez utiliser la commande
+npm audit fix --force, pour forcer la mise à jour des packages.
+
+installer React et React-DOM: npm install react react-dom
+installer axios : npm install axios
+installer React-Bootstrap et Bootstrap : npm install react-bootstrap bootstrap
+lancer le serveur de développement de React à partir du dossier demonstrateur : npm start

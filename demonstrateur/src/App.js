@@ -50,15 +50,15 @@ function App() {
     setResult(null);
     setError('');
     const formData = new FormData();
-    formData.append('voice', audioFile);
-
+    formData.append('audio', audioFile); // Assurez-vous que ceci correspond à ce que votre API Flask attend
+  
     try {
-      const response = await axios.post('YOUR_API_ENDPOINT', formData, {
+      const response = await axios.post('http://127.0.0.1:8000/predict', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setResult(response.data);
+      setResult(response.data); // Supposons que l'API Flask renvoie le résultat sous un format directement utilisable
     } catch (error) {
       console.error('Error in submitting file:', error);
       setError('An error occurred while sending the data.');
@@ -69,6 +69,7 @@ function App() {
     <Container className="my-5 text-center">
       <h1 className="mb-4">Analyse des Émotions Vocales</h1>
       {error && <Alert variant="danger">{error}</Alert>}
+
       <div className="result-box">Résultat de l'analyse : {result ? result : 'En attente...'}</div>
       <Button variant="primary" onClick={isRecording ? stopRecording : startRecording} className="mt-3">
         {isRecording ? 'Arrêter l\'enregistrement' : 'Démarrer l\'enregistrement'}
