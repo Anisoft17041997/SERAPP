@@ -4,13 +4,14 @@ import joblib
 import librosa
 import numpy as np
 import warnings
-#from ml.features_extraction.extract_features import predict_emotion
+from flask_cors import CORS
+#
 #
 app = Flask(__name__)
+CORS(app)
 #
 # Load the machine learning model
 model = joblib.load('model.pkl')
-warnings.filterwarnings("ignore", category=UserWarning)
 #
 #
 def extract_features(normalized_y, sr, max_len=100):

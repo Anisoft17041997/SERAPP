@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: 'Times New Roman', Georgia, Cambria, Cochin, Times, serif;
 }
 
 .App-logo {
@@ -28,6 +29,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  margin-bottom: 10vh;
 }
 
 .App-link {
@@ -53,7 +55,9 @@
   margin-bottom: 20px;
   margin-right: 20%;
   margin-left: 20%;
-  background-color: #f8f9fa; /* Couleur de fond, à ajuster selon vos préférences */
+  background-color: #f8f9fa;
+  font-weight: 700;
+  font-size: 2em; /* Couleur de fond, à ajuster selon vos préférences */
 }
 /* Vous pouvez personnaliser davantage en fonction de vos préférences de style */
 

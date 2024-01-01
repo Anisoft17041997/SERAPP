@@ -5,5 +5,8 @@ npm audit fix --force, pour forcer la mise à jour des packages.
 
 installer React et React-DOM: npm install react react-dom
 installer axios : npm install axios
-installer React-Bootstrap et Bootstrap : npm install react-bootstrap bootstrap
+installer React-Bootstrap et Bootstrap : 
+    - npm install react-bootstrap bootstrap
+    - npm install react-icons
+
 lancer le serveur de développement de React à partir du dossier demonstrateur : npm start
