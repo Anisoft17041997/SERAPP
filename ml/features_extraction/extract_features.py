@@ -1,84 +1,74 @@
+from scipy.stats import mode
 import librosa
 import numpy as np
-from scipy.stats import mode
+from audiomentations import Compose, TimeStretch, PitchShift, AddGaussianNoise
 #
 #
 #
-def global_feature_computation(feature_matrix, computations):
-    computed_features = []
-    for computation in computations:
-        if computation == "mean":
-            computed_features.append(np.mean(feature_matrix, axis=1))
-        elif computation == "min":
-            computed_features.append(np.min(feature_matrix, axis=1))
-        elif computation == "max":
-            computed_features.append(np.max(feature_matrix, axis=1))
-        elif computation == "std":
-            computed_features.append(np.std(feature_matrix, axis=1))
-        elif computation == "range":
-            computed_features.append(np.ptp(feature_matrix, axis=1))
-        elif computation == "mode":
-            mode_result = mode(feature_matrix, axis=1)
-            computed_features.append(mode_result.mode.flatten())
-        elif computation == "median":
-            computed_features.append(np.median(feature_matrix, axis=1))
-        elif computation == "1st_quartile":
-            computed_features.append(np.percentile(feature_matrix, 25, axis=1))
-        elif computation == "3rd_quartile":
-            computed_features.append(np.percentile(feature_matrix, 75, axis=1))
+def process_audio(file_path):
+    '''Fonction de precession du fichier en vue de le normaliser'''
+    y, sr = librosa.load(file_path)
+    y, _ = librosa.effects.trim(y)
 
-    return np.concatenate(computed_features)
+    normalized_y = librosa.util.normalize(y)
+
+    return normalized_y, sr
 #
 #
 #
-def extract_features(audio_path, features, global_computation):
-    # Load the normalized and silence-removed audio
-    audio, sr = librosa.load(audio_path)
+def extract_features(normalized_y, sr, max_len=100):
+    '''Fonctions de traitement des fichiers audios'''
+    mfccs = librosa.feature.mfcc(y=normalized_y, sr=sr, n_mfcc=13)
+    chroma = librosa.feature.chroma_stft(y=normalized_y, sr=sr)
+    spectral_contrast = librosa.feature.spectral_contrast(y=normalized_y, sr=sr)
 
-    lst_spectral_flatness = []
-    lst_spectral_centroid = []
-    lst_mfcc = []
-    lst_melspectrogram = []
-    lst_chroma_stft = []
-    lst_rms = []
+    mfccs = librosa.util.fix_length(mfccs, size = max_len, axis=1)
+    chroma = librosa.util.fix_length(chroma, size = max_len, axis=1)
+    spectral_contrast = librosa.util.fix_length(spectral_contrast, size = max_len, axis=1)
 
-    feature_list = []
+    flat_mfccs = np.ravel(mfccs)
+    flat_chroma = np.ravel(chroma)
+    flat_spectral_contrast = np.ravel(spectral_contrast)
 
-    # Extract selected features
-    for feature_name in features:
-        if feature_name == "spectral_flatness":
-            spectral_flatness = librosa.feature.spectral_flatness(y=audio)
-            lst_spectral_flatness.append(global_feature_computation(spectral_flatness, global_computation))
-        elif feature_name == "spectral_centroid":
-            spectral_centroid = librosa.feature.spectral_centroid(y=audio, sr = sr)
-            lst_spectral_centroid.append(global_feature_computation(spectral_centroid, global_computation))
-        elif feature_name == "mfcc":
-            mfcc = librosa.feature.mfcc(y=audio, sr = sr)
-            lst_mfcc.append(global_feature_computation(mfcc, global_computation))
-        elif feature_name == "melspectrogram":
-            mel_spectrum = librosa.feature.melspectrogram(y=audio, sr = sr)
-            lst_melspectrogram.append(global_feature_computation(mel_spectrum, global_computation))
-        elif feature_name == "chroma_stft":
-            chroma_stft = librosa.feature.chroma_stft(y=audio, sr = sr)
-            lst_chroma_stft.append(global_feature_computation(chroma_stft, global_computation))
-        elif feature_name == "rms":
-            rms = librosa.feature.rms(y=audio)
-            lst_rms.append(global_feature_computation(rms, global_computation))
-
-    feature_list.append(lst_spectral_flatness[0])
-    feature_list.append(lst_spectral_centroid[0])
-    feature_list.append(lst_mfcc[0])
-    feature_list.append(lst_melspectrogram[0])
-    feature_list.append(lst_chroma_stft[0])
-    feature_list.append(lst_rms[0])
-
-
-    # Combine the extracted features into a single feature vector
-    feature_vector = np.concatenate(feature_list)
-
-    return feature_vector
+    return flat_mfccs, flat_chroma, flat_spectral_contrast
 #
 #
 #
-def extract_features(audio, sr):
-    pass
+def augment_audio(y, sr):
+    '''Fonction d'augmentation des fichiers audios'''
+    augment = Compose([
+        TimeStretch(min_rate=0.8, max_rate=1.2),
+        PitchShift(min_semitones=-2, max_semitones=2),
+        AddGaussianNoise(min_amplitude=0.001, max_amplitude=0.015)
+    ])
+
+    augmented_y = augment(samples=y, sample_rate=sr)
+
+    return augmented_y
+#
+#
+#
+def is_anger(emotion):
+    '''Dans notre contexte, nous avons décidé de nous concentrer sur la prédiction d'une émotion: la colère'''
+    return 1 if emotion == "anger" else 0
+#
+#
+#
+def predict_emotion(audio_test_file, model):
+    '''Fonction qui permet de predire l'emotion d'un fichier audio
+     en prenant l'audion et le model en paramètres'''
+    normalized_y, sr = process_audio(audio_test_file)
+    flat_mfccs, flat_chroma, flat_spectral_contrast = extract_features(normalized_y, sr)
+
+    flat_mfccs = np.array(flat_mfccs).reshape(1, -1)
+    flat_chroma = np.array(flat_chroma).reshape(1, -1)
+    flat_spectral_contrast = np.array(flat_spectral_contrast).reshape(1, -1)
+
+    flat_features = np.concatenate((flat_mfccs, flat_chroma, flat_spectral_contrast), axis=1)
+
+    prediction = model.predict(flat_features)
+
+    print("Audio File is anger: ", audio_test_file)
+    print("Prediction: ", prediction == 1)
+
+    return is_anger(prediction)
