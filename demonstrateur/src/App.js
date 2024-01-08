@@ -20,6 +20,10 @@ function App() {
   const mediaRecorderRef = useRef(null);
   const audioUrlRef = useRef(null);
 
+  const [audioBlob, setAudioBlob] = useState(null);
+  const [lastAction, setLastAction] = useState(null);
+
+
   const cleanup = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
@@ -44,7 +48,13 @@ function App() {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorderRef.current = new MediaRecorder(stream);
       mediaRecorderRef.current.ondataavailable = (event) => {
-        setAudioFile(event.data);
+        //setAudioFile(event.data);
+
+
+        setAudioBlob(event.data);
+        setLastAction('record'); // Mise à jour de l'action
+
+
         audioUrlRef.current = URL.createObjectURL(event.data);
       };
       mediaRecorderRef.current.onerror = handleRecordingError;
@@ -61,28 +71,58 @@ function App() {
 
   const handleUpload = (event) => {
     setAudioFile(event.target.files[0]);
+
+    setLastAction('upload'); // Mise à jour de l'action
+
   };
 
   const handleSubmit = async () => {
-    if (!audioFile) return;
+    //if (!audioFile) return;
+
+    if (lastAction === 'record' && !audioBlob) return;
+    if (lastAction === 'upload' && !audioFile) return;
+
+
     setResult(null);
     setError('');
   
-    try {
-      const formData = new FormData();
-      formData.append('audio_file', audioFile);
-      const response = await axios.post('http://127.0.0.1:8000/predict', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Accept': 'application/json',
-        },
-      });
-      setResult(response.data);
+    setTimeout(async () => {
+        try {
+          const formData = new FormData();
+          //formData.append('audio_file', audioFile);
 
-    } catch (error) {
-      handleError(error);
-    }
-  };
+          if (lastAction === 'upload') {
+
+            console.log('Uploading file:', audioFile);
+
+            formData.append('audio_file', audioFile);
+          } else if (lastAction === 'record') {
+
+            console.log('Uploading blob:', audioBlob);
+
+            formData.append('audio_file', new File([audioBlob], 'recording.wav', { type: 'audio/wav' }));
+          }
+
+          const response = await axios.post('http://127.0.0.1:8000/predict', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Accept': 'application/json',
+            },
+          });
+
+          console.log('Response:', response);
+
+          
+          setResult(response.data);
+
+        } catch (error) {
+          //handleError(error);
+          console.error('Error in submitting file:', error);
+          setError('An error occurred while sending the data.');
+
+        }
+      }, 500); // Attendre 500ms avant d'envoyer
+    };
 
   return (
     <Container className="my-5 text-center">
