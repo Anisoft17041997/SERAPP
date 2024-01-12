@@ -21,6 +21,7 @@ code {
 }
 
 .App-footer {
+  position: fixed; 
   background:#102b53;
   padding: 20px;
   color: white;

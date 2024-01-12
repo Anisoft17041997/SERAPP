@@ -69,3 +69,5 @@
     transform: rotate(360deg);
   }
 }
+
+/* Assurez-vous que le conteneur principal a un padding-bottom suffisant pour le footer */
