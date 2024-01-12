@@ -1,9 +1,7 @@
 from flask import Flask, request, jsonify
-import os
 import joblib
 import librosa
 import numpy as np
-import warnings
 from flask_cors import CORS
 #
 #^

@@ -45,6 +45,11 @@ function App() {
     cleanupAudioUrl();
   };
 
+  const handleSuccess = (response) => {
+    setResult(response.data);
+    cleanup();
+  };
+
   const handleRecordingError = (error) => {
     console.error('Error during recording:', error);
     setError('Failed to start recording. Please ensure the microphone is accessible.');
@@ -79,31 +84,24 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    if (lastAction === 'record' && !audioBlob) return;
-    if (lastAction === 'upload' && !audioFile) return;
-
+    if (!audioFile) return;
+    
     setResult(null);
     setError('');
-
+  
     try {
       const formData = new FormData();
-      if (lastAction === 'upload') {
-        formData.append('audio_file', audioFile);
-      } else if (lastAction === 'record') {
-        formData.append('audio_file', new File([audioBlob], 'recording.wav', { type: 'audio/wav' }));
-      }
-
+      formData.append('audio_file', audioFile);
       const response = await axios.post('http://127.0.0.1:8000/predict', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Accept': 'application/json',
         },
       });
-
       setResult(response.data);
+      handleSuccess(response);
     } catch (error) {
-      console.error('Error in submitting file:', error);
-      setError('An error occurred while sending the data.');
+      handleError(error);
     }
   };
 
