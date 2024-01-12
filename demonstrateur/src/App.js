@@ -50,6 +50,11 @@ function App() {
     cleanup();
   };
 
+  const handleError = (error) => {
+    console.error('Error in submitting file:', error);
+    setError('An error occurred while sending the data.');
+  };
+
   const handleRecordingError = (error) => {
     console.error('Error during recording:', error);
     setError('Failed to start recording. Please ensure the microphone is accessible.');
@@ -123,7 +128,7 @@ function App() {
       <input type="file" onChange={handleUpload} accept="audio/*" className="d-none" ref={fileInputRef} />
       <Button variant="success" onClick={handleSubmit} className="d-block mx-auto mt-3">
         Lancer l'analyse
-      </Button>
+      </Button><br/>
       <div className="audio-player-container">
         <audio src={audioUrl} controls />
       </div>
