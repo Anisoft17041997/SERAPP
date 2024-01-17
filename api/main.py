@@ -4,7 +4,7 @@ import librosa
 import numpy as np
 from flask_cors import CORS
 #
-#^
+#
 app = Flask(__name__)
 CORS(app)
 #
