@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 #
 # Load the machine learning model
-model = joblib.load('model.pkl')
+model = joblib.load('knn_model_with_amelioration.pkl')
 #
 #
 def extract_features(normalized_y, sr, max_len=100):
