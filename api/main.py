@@ -3,13 +3,14 @@ import joblib
 import librosa
 import numpy as np
 from flask_cors import CORS
+from main_telegram_notif import notify
 #
 #
 app = Flask(__name__)
 CORS(app)
 #
 # Load the machine learning model
-model = joblib.load('knn_model_with_amelioration.pkl')
+model = joblib.load('model.pkl')
 #
 #
 def extract_features(normalized_y, sr, max_len=100):
@@ -51,7 +52,10 @@ def predict():
             
             # Make a prediction using the loaded model
             prediction = model.predict(features)[0]
-            print(prediction)
+            #print(prediction)
+
+            # Notify the angry prediction
+            notify("NX1232") if prediction == 1 else None
 
             # Return the prediction as a JSON response
             return jsonify({'prediction': str(prediction)})
