@@ -52,7 +52,7 @@ def predict():
             prediction = model.predict(features)[0]
 
             # Notify the angry prediction
-            notify("NX1232") if prediction == 1 else None
+            notify("DET001") if prediction == 1 else None
 
             # Return the prediction as a JSON response
             return jsonify({'prediction': str(prediction)})
