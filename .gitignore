@@ -4,7 +4,7 @@
 api/.DS_Store
 
 ml/.DS_Store
-ml/data/test_data
+ml/data/audio_test_data
 ml/data/audio_speech_emotion
 
 demonstrateur/node_modules
