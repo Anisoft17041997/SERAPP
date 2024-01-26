@@ -9,3 +9,7 @@ ml/data/audio_speech_emotion
 
 demonstrateur/node_modules
 demonstrateur/src/.DS_Store
+
+ml/data_SIAKE
+.env-serapp
+test_data
