@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import './bootstrap/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
-import { FaMicrophone, FaStop, FaFileImport } from 'react-icons/fa';
+import { FaMicrophone, FaStop, FaFileImport, FaSearch} from 'react-icons/fa';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import './App.css';
@@ -112,22 +112,22 @@ function App() {
 
   return (
     <Container className="my-5 text-center">
-      <h1 className="mb-3">Analyse des Émotions par la Voix - SERAPP</h1>
+      <h1 className="mb-3">Speech Emotion Recognition - SERAPP</h1>
       {error && <Alert variant="danger">{error}</Alert>}
       <div className="result-box" style={{ marginBottom: '5vh' }}>
-        Résultat de l'analyse : {result ? (result.prediction === "1" ? "Colère" : "Autre émotion") : 'En attente...'}
+        Analysis result : {result ? (result.prediction === "1" ? "Anger" : "Other emotion") : 'Waiting...'}
       </div>
-      <Button variant="primary" onClick={isRecording ? stopRecording : startRecording} className="mt-3">
+      <Button variant="primary" onClick={isRecording ? stopRecording : startRecording} className="btn mt-3">
         {isRecording ? <FaStop className="mr-2" /> : <FaMicrophone className="mr-2" />}
-        {isRecording ? ' Arrêter l\'enregistrement' : ' Démarrer l\'enregistrement'}
+        {isRecording ? ' Stop recording' : ' Start recording'}
       </Button>
       <span> </span>
-      <Button variant="secondary" onClick={openFileSelector} className="mt-3 ml-2">
-        <FaFileImport className="mr-2" /> Importer un fichier
+      <Button variant="primary" onClick={openFileSelector} className="btn mt-3 ml-2">
+        <FaFileImport className="mr-2" /> Upload audio
       </Button>
       <input type="file" onChange={handleUpload} accept="audio/*" className="d-none" ref={fileInputRef} />
-      <Button variant="success" onClick={handleSubmit} className="d-block mx-auto mt-3">
-        Lancer l'analyse
+      <Button variant="success" disabled={!audioFile} onClick={handleSubmit} className="btn d-block mx-auto mt-3">
+        <FaSearch className="mr-2" /> Start analysis
       </Button><br/>
       <div className="audio-player-container">
         <audio src={audioUrl} controls />

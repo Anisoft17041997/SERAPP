@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  font-family: 'Times New Roman', Georgia, Cambria, Cochin, Times, serif;
+  font-family: monospace, 'Georgia', Cambria, 'Times New Roman', Cochin, Times, serif;
 }
 
 .App-logo {
@@ -49,7 +49,7 @@
 
 .result-box {
   border: 2px solid #007bff; /* Couleur de bordure, à ajuster selon vos préférences */
-  border-radius: 8px; /* Bordures arrondies pour le style */
+  border-radius: 8px;
   padding: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -71,3 +71,31 @@
 }
 
 /* Assurez-vous que le conteneur principal a un padding-bottom suffisant pour le footer */
+/* Styles pour les boutons */
+.btn-primary,
+.btn-secondary,
+.btn-success {
+  background-color: white;
+  padding: 20px 50px;
+  border-radius: 50px;
+  font-size: 1.2em;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  background-color: #0056b3;
+  color: white;
+}
+.btn-success:hover {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-primary {
+  color: #0056b3;
+  border: 2px solid #0056b3;
+}
+.btn-success {
+  color: #28a745;
+  border: 2px solid #28a745;
+}
