@@ -126,7 +126,7 @@ function App() {
         <FaFileImport className="mr-2" /> Upload audio
       </Button>
       <input type="file" onChange={handleUpload} accept="audio/*" className="d-none" ref={fileInputRef} />
-      <Button variant="success" disabled={!audioFile} onClick={handleSubmit} className="btn d-block mx-auto mt-3">
+      <Button variant="success" disabled={!audioFile && !audioBlob} onClick={handleSubmit} className="btn d-block mx-auto mt-3">
         <FaSearch className="mr-2" /> Start analysis
       </Button><br/>
       <div className="audio-player-container">
